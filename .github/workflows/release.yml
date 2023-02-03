@@ -19,7 +19,7 @@ jobs:
         run: npm install @octokit/rest
 
       - name: Trigger Another Github Action
-        uses: actions/github-script@1.0.0
+        uses: actions/github-script@0.0.9
         with:
           script: |
             const octokit = require("@octokit/rest")()
