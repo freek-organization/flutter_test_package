@@ -1,0 +1,32 @@
+name: Update README
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  update_readme:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      with:
+        ref: main
+        repository: freek-organization/.github
+        path: .github
+
+    - name: Trigger Another Github Action
+      uses: actions/github-script@0.9.0
+      with:
+        script: |
+          const octokit = require("@octokit/rest")()
+          octokit.repos.createDispatchEvent({
+            owner: "freek-organization",
+            repo: ".github",
+            event_type: "update_readme",
+            client_payload: {
+              repo_name: "${{ github.repository }}",
+              tag: "${{ github.ref }}"
+            }
+          })
